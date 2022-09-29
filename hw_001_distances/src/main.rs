@@ -12,7 +12,7 @@ fn calculate_haversine_distance(point_from: (f64, f64), point_to: (f64, f64)) ->
 }
 
 
-fn find_point_position_by_timestamp(points: &[(f64, f64, u64); 353], timestamp: u64) -> usize {
+fn find_point_position_by_timestamp(points: &[(f64, f64, u64)], timestamp: u64) -> usize {
     let mut left = 0i32;
     let mut right = points.len() as i32 - 1;
 
@@ -29,7 +29,7 @@ fn find_point_position_by_timestamp(points: &[(f64, f64, u64); 353], timestamp: 
     panic!("SHIT!!")
 }
 
-fn calculate_distance(points: &[(f64, f64, u64); 353], start_timestamp: u64, finish_timestamp: u64) -> f64 {
+fn calculate_distance(points: &[(f64, f64, u64)], start_timestamp: u64, finish_timestamp: u64) -> f64 {
     let start_position = find_point_position_by_timestamp(points, start_timestamp);
     let finish_position = find_point_position_by_timestamp(points, finish_timestamp);
     let mut distance = 0f64;
