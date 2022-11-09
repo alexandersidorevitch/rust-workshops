@@ -92,6 +92,65 @@ impl ListNode {
 
         *reverse_head.unwrap()
     }
+    pub fn add_other_sup(self, l1: Option<Box<ListNode>>, l2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        let mut head: Option<Box<ListNode>> = None;
+        let mut cur: &Option<Box<ListNode>> = &l1;
+        let mut other_cur: &Option<Box<ListNode>> = &l2;
+        let mut add_to_next_digit = 0i32;
+
+        loop {
+            match (cur, other_cur) {
+                (Some(node), Some(other_node)) => {
+                    let summary = node.val + other_node.val + add_to_next_digit;
+                    let mut new_node = Box::new(ListNode::new(summary % 10));
+                    add_to_next_digit = summary / 10;
+
+                    new_node.next = head;
+                    head = Some(new_node);
+
+                    cur = &node.next;
+                    other_cur = &other_node.next;
+                }
+                (Some(node), None) => {
+                    let summary = node.val + add_to_next_digit;
+                    let mut new_node = Box::new(ListNode::new(summary % 10));
+                    add_to_next_digit = summary / 10;
+
+                    new_node.next = head;
+                    head = Some(new_node);
+
+                    cur = &node.next;
+                }
+                (None, Some(node)) => {
+                    let summary = node.val + add_to_next_digit;
+                    let mut new_node = Box::new(ListNode::new(summary % 10));
+                    add_to_next_digit = summary / 10;
+
+                    new_node.next = head;
+                    head = Some(new_node);
+
+                    other_cur = &node.next;
+                }
+                (None, None) => {
+                    if add_to_next_digit == 1 {
+                        let mut new_node = Box::new(ListNode::new(1));
+                        new_node.next = head;
+                        head = Some(new_node);
+                    }
+                    break;
+                }
+            };
+        };
+
+        let mut reverse_head = None;
+        while let Some(mut node) = head {
+            head = node.next;
+            node.next = reverse_head;
+            reverse_head = Some(node);
+        };
+
+        reverse_head
+    }
 }
 
 fn main() {
